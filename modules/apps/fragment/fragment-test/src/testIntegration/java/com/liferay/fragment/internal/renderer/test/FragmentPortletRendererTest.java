@@ -179,9 +179,6 @@ public class FragmentPortletRendererTest {
 			FragmentEntryLink fragmentEntryLink, Layout layout)
 		throws Exception {
 
-		JSONObject editableValuesJSONObject =
-			fragmentEntryLink.getEditableValuesJSONObject();
-
 		try (AutoCloseable autoCloseable =
 				_layoutServiceContextHelper.getServiceContextAutoCloseable(
 					layout)) {
@@ -193,6 +190,9 @@ public class FragmentPortletRendererTest {
 
 			httpServletRequest.setAttribute(
 				"ORIGINAL_HTTP_SERVLET_REQUEST", httpServletRequest);
+
+			JSONObject editableValuesJSONObject =
+				fragmentEntryLink.getEditableValuesJSONObject();
 
 			_fragmentPortletRenderer.renderPortlet(
 				fragmentEntryLink, httpServletRequest,
