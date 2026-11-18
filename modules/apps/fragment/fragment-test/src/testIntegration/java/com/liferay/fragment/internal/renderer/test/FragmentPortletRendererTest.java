@@ -16,6 +16,9 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServ
 import com.liferay.layout.test.util.ContentLayoutTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.layout.util.LayoutServiceContextHelper;
+import com.liferay.layout.utility.page.kernel.constants.LayoutUtilityPageEntryConstants;
+import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
+import com.liferay.layout.utility.page.service.LayoutUtilityPageEntryLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -75,6 +78,25 @@ public class FragmentPortletRendererTest {
 
 		FragmentEntryLink fragmentEntryLink = _addPortletFragmentEntryLink(
 			layout);
+
+		_renderPortlet(
+			fragmentEntryLink, LayoutTestUtil.addTypeContentLayout(_group));
+
+		Assert.assertNull(_fetchSharedPortletPreferences(fragmentEntryLink));
+	}
+
+	@Test
+	@TestInfo("LPD-115998")
+	public void testRenderPortletFromLayoutUtilityPageEntry() throws Exception {
+		LayoutUtilityPageEntry layoutUtilityPageEntry =
+			_layoutUtilityPageEntryLocalService.addLayoutUtilityPageEntry(
+				null, TestPropsValues.getUserId(), _group.getGroupId(), 0, 0,
+				true, RandomTestUtil.randomString(),
+				LayoutUtilityPageEntryConstants.TYPE_SC_NOT_FOUND, null,
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		FragmentEntryLink fragmentEntryLink = _addPortletFragmentEntryLink(
+			_layoutLocalService.getLayout(layoutUtilityPageEntry.getPlid()));
 
 		_renderPortlet(
 			fragmentEntryLink, LayoutTestUtil.addTypeContentLayout(_group));
@@ -220,6 +242,10 @@ public class FragmentPortletRendererTest {
 
 	@Inject
 	private LayoutServiceContextHelper _layoutServiceContextHelper;
+
+	@Inject
+	private LayoutUtilityPageEntryLocalService
+		_layoutUtilityPageEntryLocalService;
 
 	@Inject
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
