@@ -89,9 +89,9 @@ public class RenderFragmentEntryLinkMVCResourceCommandTest {
 				false, FragmentConstants.TYPE_COMPONENT, null,
 				WorkflowConstants.STATUS_APPROVED, serviceContext);
 
-		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
-
 		int portletPreferencesCount = _getPortletPreferencesCount();
+
+		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
 
 		try (AutoCloseable autoCloseable =
 				_layoutServiceContextHelper.getServiceContextAutoCloseable(
